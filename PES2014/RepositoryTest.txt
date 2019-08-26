@@ -1,0 +1,135 @@
+private EmployeeRepository repository;
+
+    @Before
+    public void setUp() throws Exception {
+        this.repository = EmployeeRepositoryImpl.getEmployeeRepository();
+    }
+
+
+    @Test
+    public void getAll() {
+
+        Set<Employee> employeeSet = repository.getAll();
+        Assert.assertNotNull(employeeSet);
+
+    }
+
+    @Test
+    public void create() {
+
+        Employee employee = EmployeeFactory.getEmployee(1, "Riaz", "Khan");
+
+        repository.create(employee);
+
+        Employee inRepo = repository.read(employee.getEmpNumber());
+
+        Assert.assertNotNull(inRepo);
+
+    }
+
+    @Test
+    public void read() {
+
+        Employee employee = EmployeeFactory.getEmployee(1, "Riaz", "Khan");
+
+        repository.create(employee);
+
+        Employee inRepo = repository.read(employee.getEmpNumber());
+
+        Assert.assertNotNull(inRepo);
+    }
+
+    @Test
+    public void update() {
+
+        Employee employee = EmployeeFactory.getEmployee(1, "Riaz", "Khan");
+
+        repository.create(employee);
+        Employee inRepo = repository.read(employee.getEmpNumber());
+
+        employee.setEmpFirstName("Not Riaz");
+
+        repository.update(employee);
+
+        Assert.assertEquals(employee.getEmpNumber(), inRepo.getEmpNumber());
+
+    }
+
+    @Test
+    public void delete() {
+
+        Employee employee = EmployeeFactory.getEmployee(1, "Riaz", "Khan");
+
+        repository.create(employee);
+
+        Employee inRepo = repository.read(employee.getEmpNumber());
+
+        Assert.assertNotNull(inRepo);
+
+        repository.delete(employee.getEmpNumber());
+
+        Employee deleted = repository.read(employee.getEmpNumber());
+
+        Assert.assertNull(deleted);
+
+    }
+
+ private EmployeeRepositoryImpl repository;
+    private Employee employee;
+
+    private Employee getSavedEmployee() {
+        Set<Employee> savedEmployee = this.repository.getAll();
+        return savedEmployee.iterator().next();
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        this.repository = EmployeeRepositoryImpl.getRepository().getRepository();
+        this.employee = EmployeeFactory.createEmployee("emp1234", "Peter", "Pollock", "male", "White");
+    }
+
+    @Test
+    public void a_create() {
+        Employee created = this.repository.create(this.employee);
+        System.out.println("In create, created = " + created);
+        d_getAll();
+        Assert.assertSame(created, this.employee);
+    }
+
+    @Test
+    public void b_read() {
+        Employee savedEmployee1 = getSavedEmployee();
+        this.repository.read(savedEmployee1.getEmployeeId());
+        d_getAll();
+
+    }
+
+    @Test
+    public void e_delete() {
+        Employee savedEmployee = getSavedEmployee();
+        this.repository.delete(savedEmployee.getEmployeeId());
+        d_getAll();
+    }
+
+    @Test
+    public void c_update() {
+        String newName = "emp2000";
+        Employee employee = new Employee.Builder().createEmployeeId(newName)
+                .createFirstname("Thabang")
+                .createLastname("Molefe")
+                .createGender("Male")
+                .createRace("Black")
+                .build();
+        System.out.println("In update, about_to_updated = " + employee);
+        Employee updated = this.repository.update(employee);
+        System.out.println("In update, updated = " + employee);
+        Assert.assertEquals(newName, employee.getEmployeeId());
+        d_getAll();
+    }
+
+    @Test
+    public void d_getAll() {
+        Set<Employee> all = this.repository.getAll();
+        System.out.println("In getAll, all = " + all);
+//        Assert.assertSame(1, all.size());
+    }

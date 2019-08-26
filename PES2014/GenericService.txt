@@ -1,0 +1,10 @@
+public class genericService{
+ public Employee createSSS(Parameters)) {
+ 
+ Employee emp =  employeeFactory.createEmp(parameters);
+ Employee n = EmployeeService.getEmployee(emp);
+ EmployeeGender factory = employeeFactory.createEmp(parameters);
+ EmployeeServiceImpl.getEmployeeService().create(emp);
+ 
+ } 
+}

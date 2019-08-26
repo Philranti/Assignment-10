@@ -1,0 +1,61 @@
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
+public class ClubTournamentControllerTest {
+    @Autowired
+    private TestRestTemplate restTemplate;
+    private String baseURL="http://localhost:80/game";
+
+
+    @Test
+    public void testGetClub() {
+        HttpHeaders headers = new HttpHeaders();
+
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(baseURL + "/read/all",
+                HttpMethod.GET, entity, String.class);
+        assertNotNull(response.getBody());
+    }
+
+    @Ignore
+    public void testGetClubById() {
+        ClubTournaments ClubTournaments = restTemplate.getForObject(baseURL + "/club/1", ClubTournaments.class);
+        System.out.println(ClubTournaments.getClubTournamentName());
+        System.out.println(ClubTournaments.getClubWinner());
+        System.out.println(ClubTournaments.getTeamsParticipating());
+        System.out.println(ClubTournaments.getNameOfTournament());
+        System.out.println(ClubTournaments.getNumberOfTournaments());
+        assertNotNull(ClubTournaments);
+    }
+
+    @Test
+    public void testCreateClubTournaments() {
+        ClubTournaments ClubTournaments = ClubTournamentFactory.createClubTournament("UEFA",32,"Real Madrid");
+
+        ResponseEntity<ClubTournaments> postResponse = restTemplate.postForEntity(baseURL + "/club", ClubTournaments, ClubTournaments.class);
+        assertNotNull(postResponse);
+        assertNotNull(postResponse.getBody());
+    }
+
+    @Ignore
+    public void testUpdateClub() {
+        int id = 1;
+        ClubTournaments ClubTournaments = restTemplate.getForObject(baseURL + "/club/" + id, ClubTournaments.class);
+
+        restTemplate.put(baseURL + "/students/" + id, ClubTournaments);
+        ClubTournaments updatedGame = restTemplate.getForObject(baseURL + "/club/" + id, ClubTournaments.class);
+        assertNotNull(updatedGame);
+    }
+
+    @Ignore
+    public void testDeleteEmployeeClub() {
+        int id = 2;
+        ClubTournaments student = restTemplate.getForObject(baseURL + "/club/" + id, ClubTournaments.class);
+        assertNotNull(student);
+        restTemplate.delete(baseURL + "/club/" + id);
+        try {
+            student = restTemplate.getForObject(baseURL + "/club/" + id, ClubTournaments.class);
+        } catch (final HttpClientErrorException e) {
+            assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
+        }
+    }
+}

@@ -1,0 +1,8 @@
+public static Employee createEmployee(int empID, String name, String surname){
+		
+		return new Employee.Builder().createId(Misc.generatedId())	// return new
+		.createId(empID)
+		.createName(name)
+		.createSurname(surname)
+		.build();
+	}

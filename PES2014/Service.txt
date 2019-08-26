@@ -1,0 +1,44 @@
+public class ServiceImplementation implements ServiceInterface{
+	private static ServiceImplementation serviceImpl = null;
+	private RepositoryImpl repository;
+	
+	private ServiceImplementation(){
+		repository = RepositoryImpl.getRepositoryImpl();
+				
+	}
+	
+	public static ServiceImplementation getServiceImpl(){
+		if(serviceImpl == null){
+			return new ServiceImplementation();
+		}
+		return serviceImpl;		
+		
+	}
+	
+	@Override
+	public Set<Employee> getAll(){
+		return repository.getAll();
+	}
+	
+	@Override
+	public Employee create(Employee createEmployee){
+		return repository.create(createEmployee);
+	}
+	
+	@Override
+	public Employee read(String readEmployee){
+		return repository.read(readEmployee);		
+	}
+	
+	@Override
+	public Employee update(Employee updateEmployee){
+		return repository.update(updateEmployee);
+	}
+	
+	@Override
+	public void Employee delete(String deleteEmployee){
+		repository.delete(deleteEmployee);
+	}
+	
+	
+}

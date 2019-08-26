@@ -1,0 +1,49 @@
+@RestController
+@RequestMapping("p/l/rc")
+public class Controllerss {
+ @Autowired
+ private ServiceImpl ser;
+ 
+ @PostMapping(value = "/create{race}" produces = MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity createEmployee(@PathVariable String employee){
+	 
+	 System.out.println("" +employee)
+	 ResponseObj obj = ResponseObjFactory.buildGenericResponseObj(HttpStatus Employee savedEmp;
+	 if(employee == null || employee.trim().isEmpty() || employee.trim().equalsIgnoreCase( "n 
+	 responseObj.setResponseCode(HttpStatus.PRECONITION_FAILED.toString());
+	 responseObj.setResponseDescription("Provide a employee");
+  }else{
+	savedEmp = ser.retrieveByDesc(employee);
+    if(employee != null){
+			responseObj.setResponseDescription("Already Exist");
+	} else {
+		savedEmp = EmployeeFactory.createEmployee(employee);
+		savedEmp = ser.create(savedEmp);
+	}
+	responseObj.setResponse(savedEmp);
+  }
+  return ResponseEntity.ok(responseObj);
+  }
+
+	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity getAll(){
+	ResponseObj obj = ResponseObjFactory.buildGenericResponseObj(HttpStatus.OK.toString(),"Success");
+	Set<Employee> emp = employeeService.getAll();
+	responseObj.setResponse(emp);
+	return ResponseEntity.ok(responseObj);
+	}	
+	
+	//Employee                  
+	private Employee savedEmp(Employee savedEmp){
+		Employee employee = EmployeeFactory.createEmployee(savedEmp.getName(), savedEmp.getSurName());
+		return employeeService.retrieveByDesc(employee.getGender())
+	}
+	
+	// Demography
+	//Employee                  
+	private Employee savedEmp(Employee savedEmp, Race rc){
+		EmployeeRace employeeRace = EmployeeRaceFactory.createEmployeeRace(savedEmp.getName());
+		return employeeRacService.create(employeeRace);
+	}
+   
+ }

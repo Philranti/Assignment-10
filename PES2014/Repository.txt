@@ -1,0 +1,109 @@
+public class RepositoryImpl implements Repository{
+	
+	private static RepositoryImpl repository = null;
+	private Set<Employee> employee;
+	
+	private RepositoryImpl(){
+		
+		employee = HashSet<Employee>();
+		
+	}
+	
+	public static RepositoryImpl getRepositoryImpl() {
+		
+		if(repository == null){
+			
+			employee = new RepositoryImpl();
+			return employee;
+		}
+		
+		return employee;
+		
+	}
+	
+	public Set<Employee> getAll(){
+		
+		return employee;
+	}
+	
+	public Employee create(Integer create){
+		
+		employee.add(create);
+		return create;		
+	}
+		
+	
+	public Employee read(Integer read){ // for Integer ID
+	
+	return employee.stream().filter(employee -> employee.getEmployeeId() == read).findAny().orElse(null);
+				
+	}
+	
+	
+	public Employee update(Employee update){
+		Employee toUpdate = read(update.getEmployeeId());
+			if(toUpdate != null){
+				
+				employee.remove(toUpdate);
+				return create(update);
+				
+			}
+			
+			return null;
+		
+	}
+	
+	public void delete(Integer id){
+		Employee toDelete = read(id)
+		if(toDelete != null){
+			
+			employee.remove(toDelete);
+			
+		}
+		
+	}
+	
+	// For String
+	private Employee findEmployeeId(String empId) {
+		
+		return employee.stream().filter(new Predicate<Employee>(){
+			@Override
+			public boolean test(Employee empId) {
+				return empId.getEmployeeId().trim().equals(empId);
+			}
+		}).findAny().orElse(null);
+		
+	}
+	
+	public Employee create(Employee createEmployee){
+		employee.create(createEmployee);			// cannot make a return statement
+		return createEmployee;
+	}
+	
+	public Employee read(String readEmployee){				// needs fixing
+		Employee toRead = findEmployeeId(readEmployee);
+		return toRead;	
+	} 
+	
+	public Employee update(Employee updateEmployee){
+		Employee toUpdate = findEmployeeId(updateEmployee.getEmployeeId());
+		if(toUpdate != null){
+			employee.remove(toUpdate);
+			return create(updateEmployee);
+			
+		}
+		
+		return null;
+	}
+	
+	public void Employee(String delete){
+		Employee toDelete = findEmployeeId(delete);
+		
+		if(toDelete != null){
+			employee.remove(toDelete)
+			
+		}
+		
+	}
+	
+}
